@@ -19,8 +19,8 @@ var db *pgx.Conn
 var redisClient *redis.Client
 
 type Log struct {
-	Message   string `json:"log_message"`
-	Level     string `json:"log_level"`
+	Message   string `json:"message"`
+	Level     string `json:"level"`
 	CreatedAt string `json:"created_at"`
 }
 
@@ -69,6 +69,9 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("POST /api/logs", func(w http.ResponseWriter, r *http.Request) {
+
+		slog.Info("Create log request received\n")
+
 		if r.Method != http.MethodPost {
 			http.Error(w, "Only POST is allowed", http.StatusMethodNotAllowed)
 			return
@@ -102,10 +105,15 @@ func main() {
 		}
 	})
 	mux.HandleFunc("GET /api/logs", func(w http.ResponseWriter, r *http.Request) {
+
+		slog.Info("Get log request received")
+
 		query := r.URL.Query()
 		since := query.Get("since")
 		level := query.Get("level")
 		limit := query.Get("limit")
+
+		slog.Info(since, level, limit)
 
 		// Base query
 		queryStr := "SELECT log_message, log_level, created_at FROM logs"
@@ -155,6 +163,7 @@ func main() {
 		}
 
 		// Execute the query
+		slog.Info("Query", "QueryString", queryStr)
 		rows, err := db.Query(context.Background(), queryStr, params...)
 		if err != nil {
 			slog.Error("Failed to query logs from Postgres-SQL", "error", err)
@@ -190,7 +199,7 @@ func main() {
 		}
 
 		// Cache the result in Redis (for 1 hour)
-		redisClient.Set(context.Background(), cacheKey, logsJSON, time.Hour)
+		redisClient.Set(context.Background(), cacheKey, logsJSON, time.Minute*5)
 
 		// Return the logs to the client
 		w.Header().Set("Content-Type", "application/json")

@@ -81,24 +81,36 @@ To make changes to the project:
 
 1. Modify the Go code as needed.
 2. Rebuild the Docker image:
-   ```
+   ```bash
    docker compose build goapp
    ```
 3. Restart the containers:
-   ```
+   ```bash
    docker compose up -d
    ```
+## Demo Screenshot
+The current docker setup has a go application, a redis service as cache and a postgres database.
+![Docker Compose setup](docker-compose.png)
+
+Post-Query 
+![Post Query Example](example-post.png)
+
+Get-Query
+![Get-Query Example](example-get.png)
+
+Caching-Service
+![Caching-Service in Action](caching-service-example.png)
 
 ## Troubleshooting
 
 If you encounter any issues:
 
 1. Check the logs of the containers:
-   ```
+   ```bash
    docker compose logs
    ```
 2. Ensure all containers are running:
-   ```
+   ```bash
    docker compose ps
    ```
 3. Verify the environment variables in the `docker-compose.yml` file.

@@ -32,9 +32,10 @@ This project implements a simple log management system using Go, PostgreSQL, and
    ```
 
 2. Build and start the containers:
-   ```
+   ```bash
    docker compose up -d
    ```
+   This will automatically create all the services and run the migrations also.
 
 3. The application should now be running and accessible at `http://localhost:8080`.
 

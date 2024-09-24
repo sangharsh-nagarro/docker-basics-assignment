@@ -2,7 +2,7 @@
 CREATE TABLE logs (
                       id SERIAL PRIMARY KEY,
                       log_message TEXT NOT NULL,
-                      log_level VARCHAR(20) NOT NULL,
+                      log_level VARCHAR(30) NOT NULL,
                       created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

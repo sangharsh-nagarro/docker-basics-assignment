@@ -23,6 +23,17 @@ This project implements a simple log management system using Go, PostgreSQL, and
 - Docker
 - Docker Compose
 
+### Environment Variables
+
+The application uses the following environment variables:
+
+- `DATABASE_URL`: PostgreSQL connection string
+- `REDIS_URL`: Redis connection string
+- `POSTGRES_USER`: PostgreSQL user
+- `POSTGRES_PASSWORD`: PostgreSQL password
+- `POSTGRES_DB`: PostgreSQL database
+These are set in the `docker-compose.yml` file.
+
 ### Running the Application
 
 1. Clone the repository:
@@ -30,18 +41,11 @@ This project implements a simple log management system using Go, PostgreSQL, and
    git clone https://github.com/sangharsh-nagarro/docker-basics-assignment
    cd docker-basics-assignment
    ```
-## Environment Variables
-
-The application uses the following environment variables:
-
-- `DATABASE_URL`: PostgreSQL connection string
-- `REDIS_URL`: Redis connection string
-These are set in the `docker-compose.yml` file.
 
 2. Create a .env file and populate the required Environment Variables mentioned in the .env.example
 
 3. Build and start the containers:
-   ```
+   ```bash
    docker compose up -d
    ```
 

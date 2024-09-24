@@ -27,8 +27,8 @@ This project implements a simple log management system using Go, PostgreSQL, and
 
 1. Clone the repository:
    ```
-   git clone <repository-url>
-   cd <project-directory>
+   git clone [<repository-url>](https://github.com/sangharsh-nagarro/docker-basics-assignment)
+   cd docker-basics-assignment
    ```
 
 2. Build and start the containers:
@@ -57,7 +57,7 @@ Insert a new log entry.
 Retrieve logs based on the specified parameters.
 
 **Query Parameters:**
-- `since`: Time range (e.g., "1h", "24h")
+- `since`: (Optional) (e.g., "1h", "24h")
 - `level`: (Optional) Log level filter
 - `limit`: (Optional) Maximum number of logs to return
 
@@ -82,11 +82,11 @@ To make changes to the project:
 1. Modify the Go code as needed.
 2. Rebuild the Docker image:
    ```
-   docker-compose build goapp
+   docker compose build goapp
    ```
 3. Restart the containers:
    ```
-   docker-compose up -d
+   docker compose up -d
    ```
 
 ## Troubleshooting
@@ -95,11 +95,11 @@ If you encounter any issues:
 
 1. Check the logs of the containers:
    ```
-   docker-compose logs
+   docker compose logs
    ```
 2. Ensure all containers are running:
    ```
-   docker-compose ps
+   docker compose ps
    ```
 3. Verify the environment variables in the `docker-compose.yml` file.
 

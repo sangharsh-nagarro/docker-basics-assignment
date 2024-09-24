@@ -26,14 +26,14 @@ This project implements a simple log management system using Go, PostgreSQL, and
 ### Running the Application
 
 1. Clone the repository:
-   ```
-   git clone <repository-url>
-   cd <project-directory>
+   ```bash
+   git clone https://github.com/sangharsh-nagarro/docker-basics-assignment
+   cd docker-basics-assignment
    ```
 
 2. Build and start the containers:
    ```
-   docker-compose up -d
+   docker compose up -d
    ```
 
 3. The application should now be running and accessible at `http://localhost:8080`.
@@ -82,11 +82,11 @@ To make changes to the project:
 1. Modify the Go code as needed.
 2. Rebuild the Docker image:
    ```
-   docker-compose build goapp
+   docker compose build goapp
    ```
 3. Restart the containers:
    ```
-   docker-compose up -d
+   docker compose up -d
    ```
 
 ## Troubleshooting
@@ -95,18 +95,11 @@ If you encounter any issues:
 
 1. Check the logs of the containers:
    ```
-   docker-compose logs
+   docker compose logs
    ```
 2. Ensure all containers are running:
    ```
-   docker-compose ps
+   docker compose ps
    ```
 3. Verify the environment variables in the `docker-compose.yml` file.
 
-## Contributing
-
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).

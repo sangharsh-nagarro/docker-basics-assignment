@@ -41,15 +41,18 @@ These are set in the `docker-compose.yml` file.
    git clone https://github.com/sangharsh-nagarro/docker-basics-assignment
    cd docker-basics-assignment
    ```
+2. Download dependencies
+   ```bash
+   go mod download
+   ```
+3. Create a .env file and populate the required Environment Variables mentioned in the .env.example
 
-2. Create a .env file and populate the required Environment Variables mentioned in the .env.example
-
-3. Build and start the containers:
+4. Build and start the containers:
    ```bash
    docker compose up -d
    ```
 
-4. The application should now be running and accessible at `http://localhost:8080`.
+5. The application should now be running and accessible at `http://localhost:8080`.
 
 ## API Endpoints
 

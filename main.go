@@ -9,6 +9,8 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -90,21 +92,42 @@ func main() {
 		level := query.Get("level")
 		limit := query.Get("limit")
 
-		slog.Info(since, level, "Query Logs")
+		// Base query
+		queryStr := "SELECT log_message, log_level, created_at FROM logs"
+		var params []interface{}
+		var conditions []string
 
-		if since == "" {
-			http.Error(w, "Missing 'since' query parameter", http.StatusBadRequest)
-			return
+		// Default to 24 hours if 'since' is not provided
+		if since != "" {
+			// Calculate the time range based on the 'since' value (e.g., '1h', '24h')
+			duration, err := time.ParseDuration(since)
+			if err != nil || duration > 24*time.Hour {
+				http.Error(w, "Invalid 'since' value. Must be between 1h and 24h.", http.StatusBadRequest)
+				return
+			}
+			fromTime := time.Now().Add(-duration).Format(time.RFC3339)
+			params = append(params, fromTime)
+			conditions = append(conditions, "created_at >= $1")
 		}
 
-		// Calculate the time range based on the 'since' value (e.g., '1h', '24h')
-		duration, err := time.ParseDuration(since)
-		if err != nil || duration > 24*time.Hour {
-			http.Error(w, "Invalid 'since' value. Must be between 1h and 24h.", http.StatusBadRequest)
-			return
+		// Optional log level filter
+		if level != "" {
+			conditions = append(conditions, "log_level = $"+strconv.Itoa(len(params)+1))
+			params = append(params, level)
 		}
 
-		fromTime := time.Now().Add(-duration).Format(time.RFC3339)
+		// Combine conditions if any exist
+		if len(conditions) > 0 {
+			queryStr += " WHERE " + strings.Join(conditions, " AND ")
+		}
+
+		// Set limit for query
+		if limit != "" {
+			queryStr += " ORDER BY created_at DESC LIMIT $" + strconv.Itoa(len(params)+1)
+			params = append(params, limit)
+		} else {
+			queryStr += " ORDER BY created_at DESC"
+		}
 
 		// Check if the result is in Redis
 		cacheKey := fmt.Sprintf("logs:%s", r.URL.String())
@@ -116,16 +139,8 @@ func main() {
 			return
 		}
 
-		// Construct query based on whether `level` is provided
-		var rows pgx.Rows
-		if level == "" {
-			// No log level filter
-			rows, err = db.Query(context.Background(), "SELECT log_message, log_level, created_at FROM logs WHERE created_at >= $1 ORDER BY created_at DESC LIMIT $2", fromTime, limit)
-		} else {
-			// Filter by log level
-			rows, err = db.Query(context.Background(), "SELECT log_message, log_level, created_at FROM logs WHERE log_level = $1 AND created_at >= $2 ORDER BY created_at DESC LIMIT $3", level, fromTime, limit)
-		}
-
+		// Execute the query
+		rows, err := db.Query(context.Background(), queryStr, params...)
 		if err != nil {
 			slog.Error("Failed to query logs from Postgres-SQL", "error", err)
 			http.Error(w, "Failed to query logs", http.StatusInternalServerError)
@@ -167,7 +182,6 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write(logsJSON)
 	})
-
 	err := http.ListenAndServe(":8080", mux)
 	if err != nil {
 		slog.Error("Server failed to start")

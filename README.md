@@ -102,11 +102,3 @@ If you encounter any issues:
    docker-compose ps
    ```
 3. Verify the environment variables in the `docker-compose.yml` file.
-
-## Contributing
-
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).

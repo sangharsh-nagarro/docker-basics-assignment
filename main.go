@@ -79,7 +79,6 @@ func main() {
 			return
 		}
 
-		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Content-Type", "application/json")
 		_, err = w.Write([]byte(`{"status": "Log entry created successfully"}`))
 		if err != nil {
@@ -182,6 +181,7 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write(logsJSON)
 	})
+
 	err := http.ListenAndServe(":8080", mux)
 	if err != nil {
 		slog.Error("Server failed to start")

@@ -30,13 +30,22 @@ This project implements a simple log management system using Go, PostgreSQL, and
    git clone https://github.com/sangharsh-nagarro/docker-basics-assignment
    cd docker-basics-assignment
    ```
+## Environment Variables
 
-2. Build and start the containers:
+The application uses the following environment variables:
+
+- `DATABASE_URL`: PostgreSQL connection string
+- `REDIS_URL`: Redis connection string
+
+These are set in the `docker-compose.yml` file.
+2. Create a .env file and populate the required env parameters mentioned in the .env.example
+
+3. Build and start the containers:
    ```
    docker compose up -d
    ```
 
-3. The application should now be running and accessible at `http://localhost:8080`.
+4. The application should now be running and accessible at `http://localhost:8080`.
 
 ## API Endpoints
 
@@ -65,15 +74,6 @@ Retrieve logs based on the specified parameters.
 ```
 GET /api/logs?since=1h&level=info&limit=100
 ```
-
-## Environment Variables
-
-The application uses the following environment variables:
-
-- `DATABASE_URL`: PostgreSQL connection string
-- `REDIS_URL`: Redis connection string
-
-These are set in the `docker-compose.yml` file.
 
 ## Development
 

@@ -36,9 +36,9 @@ The application uses the following environment variables:
 
 - `DATABASE_URL`: PostgreSQL connection string
 - `REDIS_URL`: Redis connection string
-
 These are set in the `docker-compose.yml` file.
-2. Create a .env file and populate the required env parameters mentioned in the .env.example
+
+2. Create a .env file and populate the required Environment Variables mentioned in the .env.example
 
 3. Build and start the containers:
    ```

@@ -4,14 +4,15 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"github.com/redis/go-redis/v9"
 	"log/slog"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/redis/go-redis/v9"
 )
 
 var db *pgx.Conn
@@ -47,6 +48,21 @@ func init() {
 		os.Exit(1)
 	}
 	slog.Info("Connected to Redis successfully")
+}
+
+func withCORS(next http.Handler) http.Handler {
+	slog.Info("Inside CORS Middleware")
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
 }
 
 func main() {
@@ -182,7 +198,7 @@ func main() {
 		w.Write(logsJSON)
 	})
 
-	err := http.ListenAndServe(":8080", mux)
+	err := http.ListenAndServe(":8080", withCORS(mux))
 	if err != nil {
 		slog.Error("Server failed to start")
 	}

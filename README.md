@@ -26,13 +26,13 @@ This project implements a simple log management system using Go, PostgreSQL, and
 ### Running the Application
 
 1. Clone the repository:
-   ```
-   git clone [<repository-url>](https://github.com/sangharsh-nagarro/docker-basics-assignment)
+   ```bash
+   git clone https://github.com/sangharsh-nagarro/docker-basics-assignment
    cd docker-basics-assignment
    ```
 
 2. Build and start the containers:
-   ```
+   ```bash
    docker-compose up -d
    ```
 

@@ -63,8 +63,8 @@ Insert a new log entry.
 **Request Body:**
 ```json
 {
-  "log_message": "Your log message",
-  "log_level": "info"
+   "message": "Log Message",
+   "level": "Log Level(ERROR, INFO, WARNING)"
 }
 ```
 

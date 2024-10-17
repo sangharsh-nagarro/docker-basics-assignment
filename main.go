@@ -198,7 +198,7 @@ func main() {
 			return
 		}
 
-		// Cache the result in Redis (for 1 hour)
+		// Cache the result in Redis (for 5 Minutes)
 		redisClient.Set(context.Background(), cacheKey, logsJSON, time.Minute*5)
 
 		// Return the logs to the client
